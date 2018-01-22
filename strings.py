@@ -84,7 +84,27 @@ def compute_mnemonics(n):
         for w in l_temp:
             l.append(c+w)
     return l
+def compute_valid_ip(s,num):
+    if num < 1 and not s:
+        return ['']
+    elif num < 1:
+        return None
 
+    i = 1
+    l = []
+    while int(s[:i]) < 256 and i < len(s):
+        sub_l = compute_valid_ip(s[i:], num - 1)
+        if not sub_l:
+            continue
+        for word in sub_l:
+            if not word:
+                continue
+            r = s[:i] + '.'+ word
+            print r
+            l.append(r)
+        i += 1
+        print 'hey',s[:i], s
+    return l
 if __name__ == '__main__':
     assert decode('123') == 123
     assert decode('-025') == -25
@@ -95,4 +115,5 @@ if __name__ == '__main__':
     assert convert_spreadsheet_col('ZZ') == 702
     assert test_palindromicity('Ray a Ray') == False
     assert test_palindromicity('a man, a plan, a canal, Panama') == True
-    print compute_mnemonics('22')
+    assert set(compute_mnemonics('22')) == set(['AA', 'AB', 'AC', 'BA', 'BB', 'BC', 'CA', 'CB', 'CC'])
+    print compute_valid_ip('19216811',4)
