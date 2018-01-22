@@ -73,6 +73,17 @@ def test_palindromicity(s):
         j-=1
     return True
 
+def compute_mnemonics(n):
+    mnem = ['','','ABC','DEF','GHI','JKL','MNO','PQRS','TUV','WXYZ']
+    if not n:
+        return ['']
+    i = ord(n[0]) - ord('0')
+    l = []
+    for c in mnem[i]:
+        l_temp = compute_mnemonics(n[1:])
+        for w in l_temp:
+            l.append(c+w)
+    return l
 
 if __name__ == '__main__':
     assert decode('123') == 123
@@ -84,3 +95,4 @@ if __name__ == '__main__':
     assert convert_spreadsheet_col('ZZ') == 702
     assert test_palindromicity('Ray a Ray') == False
     assert test_palindromicity('a man, a plan, a canal, Panama') == True
+    print compute_mnemonics('22')
