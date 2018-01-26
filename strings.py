@@ -105,6 +105,24 @@ def compute_valid_ip(s,num):
         i += 1
         print 'hey',s[:i], s
     return l
+def str_encode(s):
+    char = s[0]
+    count = 1
+    encoded = ''
+    for c in s[1:]:
+        if c != char:
+            encoded += str(count)+char
+            char = c
+            count = 1
+        else:
+            count+=1
+    encoded += str(count) + char
+    return encoded
+def str_decode(s):
+    decoded = ''
+    for n,c in [(int(s[i]),s[i+1]) for i in range(0,len(s),2)]:
+        decoded += c*n
+    return decoded
 if __name__ == '__main__':
     assert decode('123') == 123
     assert decode('-025') == -25
@@ -116,4 +134,6 @@ if __name__ == '__main__':
     assert test_palindromicity('Ray a Ray') == False
     assert test_palindromicity('a man, a plan, a canal, Panama') == True
     assert set(compute_mnemonics('22')) == set(['AA', 'AB', 'AC', 'BA', 'BB', 'BC', 'CA', 'CB', 'CC'])
-    print compute_valid_ip('19216811',4)
+    #print compute_valid_ip('19216811',4)
+    assert str_encode('aaabbccccdee') == '3a2b4c1d2e'
+    assert str_decode('3a2b4c1d2e') == 'aaabbccccdee'
