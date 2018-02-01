@@ -29,8 +29,20 @@ def is_tree_symmetric(right, left):
         return is_tree_symmetric(right.right, left.left) and is_tree_symmetric(right.left, left.right)
     return False
 
+def sum_root_to_leaf(root, num):
+    if not root:
+        return num
+    print 'num', num
+    num = num <<1 | root.data
+    print 'new num', num
+    return sum_root_to_leaf(root.left, num) + sum_root_to_leaf(root.right, num)
+
 if __name__ == '__main__':
     head = Tree(1, Tree(2, Tree(3), Tree(4)), Tree(5))
     print test_tree_height_balanced(head)
     head = Tree(1, Tree(2, right=Tree(3)), Tree(2,left=Tree(3)))
     print is_tree_symmetric(head.right, head.left)
+    head = Tree(1,Tree(0,Tree(0,Tree(0),Tree(1)),Tree(1,right=Tree(1,Tree(0)))),
+                Tree(1,Tree(0,right=Tree(0,Tree(1,right=Tree(1)),Tree(0))),Tree(0,right=Tree(0))))
+    head = Tree(1,Tree(0,Tree(0,Tree(1))))
+    print sum_root_to_leaf(head,0)
