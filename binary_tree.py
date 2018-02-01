@@ -1,3 +1,4 @@
+from collections import deque
 class Tree():
     def __init__(self, data=0, left=None, right=None):
         self.data = data
@@ -31,11 +32,46 @@ def is_tree_symmetric(right, left):
 
 def sum_root_to_leaf(root, num):
     if not root:
+        return 0
         return num
-    print 'num', num
+    #print 'num', num
     num = num <<1 | root.data
-    print 'new num', num
+    #print 'new num', num
+    if not root.right and not root.left:
+        return num
     return sum_root_to_leaf(root.left, num) + sum_root_to_leaf(root.right, num)
+
+def root_to_leaf_path(root, n):
+    n -= root.data
+
+    if n == 0:
+        if not root.right and not root.left:
+            return True
+        return False
+    elif n > 0:
+        left = right = False
+        if root.left:
+            left = root_to_leaf_path(root.left, n)
+        if root.right:
+            right = root_to_leaf_path(root.right, n)
+        return right or left
+    else:
+        return False
+
+def inorder_traversal(root):
+    l = []
+    if root.left:
+        l.append(root.left)
+    l.append(root)
+    if root.right:
+        l.append(root.right)
+    while l:
+        node = l.pop()
+        if node.left:
+            l.append(node.left)
+        print node.data
+        if node.right:
+            l.append(node.right)
 
 if __name__ == '__main__':
     head = Tree(1, Tree(2, Tree(3), Tree(4)), Tree(5))
@@ -44,5 +80,11 @@ if __name__ == '__main__':
     print is_tree_symmetric(head.right, head.left)
     head = Tree(1,Tree(0,Tree(0,Tree(0),Tree(1)),Tree(1,right=Tree(1,Tree(0)))),
                 Tree(1,Tree(0,right=Tree(0,Tree(1,right=Tree(1)),Tree(0))),Tree(0,right=Tree(0))))
-    head = Tree(1,Tree(0,Tree(0,Tree(1))))
+    head = Tree(1,Tree(0,Tree(0),Tree(1)))
     print sum_root_to_leaf(head,0)
+    head = Tree(1, Tree(2, Tree(5), Tree(6)))
+    assert root_to_leaf_path(head, 8) == True
+    assert root_to_leaf_path(head, 9) == True
+    assert root_to_leaf_path(head, 5) == False
+    print 'printing'
+    inorder_traversal(head)
