@@ -59,19 +59,17 @@ def root_to_leaf_path(root, n):
         return False
 
 def inorder_traversal(root):
-    l = []
-    if root.left:
-        l.append(root.left)
-    l.append(root)
-    if root.right:
-        l.append(root.right)
-    while l:
-        node = l.pop()
-        if node.left:
-            l.append(node.left)
-        print node.data
-        if node.right:
-            l.append(node.right)
+    s, l = [], []
+    while s or root:
+        if root:
+            s.append(root)
+            root = root.left
+        else:
+            node = s.pop()
+            print node.data
+            root = node.right
+def compute_kth_node(root):
+    
 
 if __name__ == '__main__':
     head = Tree(1, Tree(2, Tree(3), Tree(4)), Tree(5))
