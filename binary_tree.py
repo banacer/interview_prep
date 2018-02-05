@@ -1,9 +1,19 @@
 from collections import deque
 class Tree():
-    def __init__(self, data=0, left=None, right=None):
+    def __init__(self, data=0, left=None, right=None, parent= None):
+        self.size = 0
         self.data = data
         self.left = left
+        if left:
+            self.left.parent = self
         self.right = right
+        self.parent = parent
+        if self.right:
+            self.size += 1
+        if self.left:
+            self.size +=1
+        if self.parent:
+            self.parent.size += self.size
     def __str__(self):
         return self.data
 
@@ -68,8 +78,37 @@ def inorder_traversal(root):
             node = s.pop()
             print node.data
             root = node.right
-def compute_kth_node(root):
+def compute_kth_node(root, k):
+    if k == 1:
+        return root
+    else:
+        if root.left and k < root.left.size:
+            return compute_kth_node(root.left, k)
+        elif k - root.left.size == 1:
+            return root
+        else:
+            k = k-1
+            if root.left:
+                k -= root.left.size
+            return compute_kth_node(root.right)
     
+def find_successor(head):
+    if head.right:
+        new_head = head.right
+        while new_head.left:
+            new_head = new_head.left
+        return new_head
+    elif head == head.parent.left:
+        return head.parent
+    elif head == head.parent.right:
+        new_head = head
+        while new_head == head.parent.right:
+            new_head = new_head.parent
+        if not new_head.parent:
+            return None
+        return head.parent
+
+
 
 if __name__ == '__main__':
     head = Tree(1, Tree(2, Tree(3), Tree(4)), Tree(5))
@@ -78,6 +117,7 @@ if __name__ == '__main__':
     print is_tree_symmetric(head.right, head.left)
     head = Tree(1,Tree(0,Tree(0,Tree(0),Tree(1)),Tree(1,right=Tree(1,Tree(0)))),
                 Tree(1,Tree(0,right=Tree(0,Tree(1,right=Tree(1)),Tree(0))),Tree(0,right=Tree(0))))
+    print 'head size', head.size
     head = Tree(1,Tree(0,Tree(0),Tree(1)))
     print sum_root_to_leaf(head,0)
     head = Tree(1, Tree(2, Tree(5), Tree(6)))
@@ -86,3 +126,6 @@ if __name__ == '__main__':
     assert root_to_leaf_path(head, 5) == False
     print 'printing'
     inorder_traversal(head)
+    head = Tree('a', Tree('b', Tree('d'), Tree('e', Tree('f',Tree('g')),Tree('h'))),
+                Tree('c', Tree('i'), Tree('j', right=Tree('k'))))
+    print 'res', find_successor(head.left.right.left.left).data
