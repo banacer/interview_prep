@@ -128,4 +128,5 @@ if __name__ == '__main__':
     inorder_traversal(head)
     head = Tree('a', Tree('b', Tree('d'), Tree('e', Tree('f',Tree('g')),Tree('h'))),
                 Tree('c', Tree('i'), Tree('j', right=Tree('k'))))
-    print 'res', find_successor(head.left.right.left.left).data
+    assert find_successor(head).data == 'i'
+    assert find_successor(head.left.right.left.left).data == 'f'

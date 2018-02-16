@@ -123,6 +123,17 @@ def str_decode(s):
     for n,c in [(int(s[i]),s[i+1]) for i in range(0,len(s),2)]:
         decoded += c*n
     return decoded
+
+def shuffle_string(s):
+    if not s or len(s)<= 2:
+        return s
+
+    size = len(s)/2
+
+    
+
+
+
 if __name__ == '__main__':
     assert decode('123') == 123
     assert decode('-025') == -25
